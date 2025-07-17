@@ -9,7 +9,7 @@ public class Switch_2 {
 		Scanner s = new Scanner(System.in);
 		System.out.print("점수 입력 : ");
 		int score = s.nextInt();
-		
+		 
 		switch (score / 10) {
 			case 10:
 			case 9:
