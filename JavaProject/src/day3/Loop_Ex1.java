@@ -22,7 +22,7 @@ public class Loop_Ex1 {
 			int answer = s.nextInt();
 			if(answer == (x*y)) {
 				System.out.println("정답 입니다.");
-				count++;
+				count++; 
 			} else if(answer == 0) {
 				System.out.println("0일 입력하여 종료됩니다..");
 				num = i-1;
