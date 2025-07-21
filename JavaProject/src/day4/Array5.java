@@ -13,12 +13,16 @@ public class Array5 {
 		// 단, 중복이 없어야 함.
 		int arr[] = new int[6];
 		Random ran = new Random();
+		
 		for(int i=0; i<arr.length; i++) {
 			arr[i] = ran.nextInt(45)+1; // 1~45
+			for(int j=0; j<i; j++) {
+				if(arr[j] == arr[i]) {
+					i--;
+					break;
+				}
+			}
 		}
 		System.out.println(Arrays.toString(arr));
-		
-		
 	}
-
 }
