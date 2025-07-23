@@ -14,9 +14,14 @@ public class SelectionSort3 {
 					minIndex = j;
 				}
 			}
+			
 			int temp = arr[i];
-			arr[minIndex] = arr[i];
-			arr[i] = temp;
+			arr[i] = arr[minIndex];
+			arr[minIndex] = temp;
+			
+//			int temp = arr[minIndex];
+//			arr[minIndex] = arr[i];
+//			arr[i] = temp;
 		}
 		System.out.println(Arrays.toString(arr));
 	}
