@@ -12,5 +12,10 @@ public class Student extends Person{
 		super(name, age, addr, height);
 		this.stuNo = stuNo;
 	}
-
+	
+	@Override
+	void eat() {
+		System.out.println(name + "이(가) 급식을 먹는다.");
+//		super.eat();
+	}
 }

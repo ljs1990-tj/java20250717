@@ -1,5 +1,7 @@
 package day7;
 
+import day5.Human;
+
 public class ReivewMain1 {
 
 	public static void main(String[] args) {
@@ -12,7 +14,6 @@ public class ReivewMain1 {
 		// 
 		apple.setPrice(1500);
 		System.out.println(apple.getPrice());
-		
 		
 		
 	}
