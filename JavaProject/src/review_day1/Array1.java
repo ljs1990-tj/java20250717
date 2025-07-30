@@ -17,8 +17,32 @@ public class Array1 {
 //		Object obj[] = {1, 1.5, "홍길동", true, new Random()};
 //		int arr[] = new int[3]; // {0, 0, 0}
 		
+//		String subjectArr[] = {"java", "oracle", "html", "javascript", "jsp"};
+//		int scoreArr[] = {90, 85, 60, 95, 100}; 
+		
 		// 점수가 평균을 넘는 과목들을 출력
 		// 결과 : '평균이 넘는 과목은 java javascript jsp 입니다'
+		int sum = 0;
+		for(int score : scoreArr) {
+			sum += score;
+		}
+		double avg = (double) sum / scoreArr.length;
 		
+		System.out.print("평균이 넘는 과목은 ");
+		for(int i=0; i<scoreArr.length; i++) {
+			if(scoreArr[i] > avg) {
+				System.out.print(subjectArr[i] + " ");
+			}
+		}
+		System.out.println("입니다");
+		
+		
+		String subStr = "";
+		for(int i=0; i<scoreArr.length; i++) {
+			if(scoreArr[i] > avg) {
+				subStr += subjectArr[i] + " ";
+			}
+		}
+		System.out.println("평균이 넘는 과목은 " + subStr + "입니다");
 	}
 }
