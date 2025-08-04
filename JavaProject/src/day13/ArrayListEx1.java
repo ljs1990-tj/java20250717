@@ -26,11 +26,11 @@ public class ArrayListEx1 {
 		strList.add("홍길동");
 		strList.add("김철수");
 		strList.add("박영희");
-		
-		for(int i=0; i<strList.size(); i++) {
-			String str = strList.get(i);
-			System.out.println(str);
-		}
+		System.out.println(strList);
+//		for(int i=0; i<strList.size(); i++) {
+//			String str = strList.get(i);
+//			System.out.println(str);
+//		}
 		
 		ArrayList<Object> objList = new ArrayList<>();
 		objList.add(1);
