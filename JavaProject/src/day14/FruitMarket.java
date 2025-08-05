@@ -6,6 +6,33 @@ import java.util.Scanner;
 
 public class FruitMarket {
 
+	public static int checkNumber(String msg) {
+		Scanner s = new Scanner(System.in);
+		int input;
+		while(true) {
+			System.out.print(msg + " : ");
+			input = s.nextInt();
+			
+			// 가격 100단위 인지 체크하는 조건문
+			if(msg.equals("가격")) {
+				if(input % 100 != 0) {
+					System.out.println("가격은 100단위로 입력해 주세요 ");
+					continue;
+				}
+			}
+			
+			// 숫자 0 혹은 음수인지 체크하는 조건문
+			if(input <= 0) {
+				System.out.println("음수는 불가능 합니다. 다시 입력해주세요.");
+			} else {
+				break;
+			}
+		}
+		
+		return input;
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// * 과일가게 프로그램 *
@@ -28,17 +55,31 @@ public class FruitMarket {
 				HashMap<String, Object> fruit = new HashMap<>();
 				System.out.print("과일명 : ");
 				String fruitName = s.next();
-				fruit.put("fruitName", fruitName);
+				boolean searchFlg = false;
+				for(int i=0; i<list.size(); i++) {
+					HashMap<String, Object> getFruit = list.get(i);
+					if(getFruit.get("fruitName").equals(fruitName)) {
+						searchFlg = true;
+//						System.out.print("개수 : ");
+						int count = checkNumber("개수");
+						int sum = (int) getFruit.get("count") + count;
+						getFruit.put("count", sum);
+					} 
+				}
 				
-				System.out.print("가격 : ");
-				int price = s.nextInt();
-				fruit.put("price", price);
-				
-				System.out.print("개수 : ");
-				int count = s.nextInt();
-				fruit.put("count", count);
-				
-				list.add(fruit);
+				if(!searchFlg) {
+					fruit.put("fruitName", fruitName);
+					
+//					System.out.print("가격 : ");
+//					int price = s.nextInt();
+					fruit.put("price", checkNumber("가격"));
+					
+//					System.out.print("개수 : ");
+//					int count = s.nextInt();
+					fruit.put("count", checkNumber("개수"));
+					
+					list.add(fruit);
+				}
 				
 			} else if(menu == 2) {
 				System.out.print("검색할 과일명 : ");
@@ -64,9 +105,12 @@ public class FruitMarket {
 					// list.get(i) => HashMap으로 만든 map
 					if(list.get(i).get("fruitName").equals(fruitName)) {
 						searchFlg = true;
-						System.out.print("판매할 개수 : ");
-						int sellCount = s.nextInt();
-//						(int) list.get(i).get("count") - sellCount;
+						int sellCount = checkNumber("판매할 개수");
+						int currentCount = (int) list.get(i).get("count");
+						if(currentCount < sellCount) {
+							System.out.println("현재 판매 가능한 개수는 " + currentCount + "개 입니다.");
+							break;
+						}
 						list.get(i).put("count", (int) list.get(i).get("count") - sellCount);
 						
 					}
