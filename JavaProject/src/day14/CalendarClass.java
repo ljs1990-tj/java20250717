@@ -39,7 +39,7 @@ public class CalendarClass {
 			System.out.print("토요일");
 			break;
 		}
-		System.out.print("(" + hourOfDay + "시)");
+		System.out.print("(" + hourOfDay + "시) ");
 		if (ampm == Calendar.AM)
 			System.out.print("오전");
 		else
@@ -57,7 +57,7 @@ public class CalendarClass {
 		firstDate.set(2016, 11, 25);
 		firstDate.set(Calendar.HOUR_OF_DAY, 20); // 저녁8시
 		firstDate.set(Calendar.MINUTE, 30); // 30분
-		printCalendar("처음데이트한날은", firstDate);
+		printCalendar("처음 데이트 한 날은", firstDate);
 	}
 
 }
