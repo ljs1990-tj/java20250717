@@ -81,55 +81,41 @@ public class FruitMarket {
 			} else if(menu == 2) {
 				System.out.print("검색할 과일명 : ");
 				String fruitName = s.next();
-				boolean searchFlg = false;
-				for(int i=0; i<list.size(); i++) {
-					// list.get(i) => HashMap으로 만든 map
-					if(list.get(i).get("fruitName").equals(fruitName)) {
-						searchFlg = true;
-						System.out.print("가격 : " + list.get(i).get("price") + "원, ");
-						System.out.println("개수 : " + list.get(i).get("count") + "개");
-					}
-				}
-				if(!searchFlg) { // searchFlg == false
+				HashMap<String, Object> fruit = searchFruit(list, fruitName);
+				if(fruit == null) {
 					System.out.println("해당 과일이 존재하지 않습니다.");
+				} else {
+					System.out.print("가격 : " + fruit.get("price") + "원, ");
+					System.out.println("개수 : " + fruit.get("count") + "개");
 				}
+				
 				
 			} else if(menu == 3) {
 				System.out.print("판매할 과일명 : ");
 				String fruitName = s.next();
-				boolean searchFlg = false;
-				for(int i=0; i<list.size(); i++) {
-					// list.get(i) => HashMap으로 만든 map
-					if(list.get(i).get("fruitName").equals(fruitName)) {
-						searchFlg = true;
-						int sellCount = checkNumber("판매할 개수");
-						int currentCount = (int) list.get(i).get("count");
-						if(currentCount < sellCount) {
-							System.out.println("현재 판매 가능한 개수는 " + currentCount + "개 입니다.");
-							break;
-						}
-						list.get(i).put("count", (int) list.get(i).get("count") - sellCount);
-						
-					}
-				}
-				if(!searchFlg) { // searchFlg == false
+				HashMap<String, Object> fruit = searchFruit(list, fruitName);
+				if(fruit == null) {
 					System.out.println("해당 과일이 존재하지 않습니다.");
+				} else {
+					int sellCount = checkNumber("판매할 개수");
+					int currentCount = (int) fruit.get("count");
+					if(currentCount < sellCount) {
+						System.out.println("현재 판매 가능한 개수는 " + currentCount + "개 입니다.");
+						break;
+					}
+					fruit.put("count", (int) fruit.get("count") - sellCount);
 				}
+				
 			} else if(menu == 4) {
 				System.out.print("가격 수정할 과일명 : ");
 				String fruitName = s.next();
-				boolean searchFlg = false;
-				for(int i=0; i<list.size(); i++) {
-					HashMap<String, Object> map = list.get(i);
-					if(map.get("fruitName").equals(fruitName)) {
-						searchFlg = true;
-						System.out.print("수정할 가격 입력 : ");
-						int newPrice = checkNumber("수정할 가격 입력");
-						map.put("price", newPrice);
-					}
-				}
-				if(!searchFlg) { // searchFlg == false
+				HashMap<String, Object> fruit = searchFruit(list, fruitName);
+				if(fruit == null) {
 					System.out.println("해당 과일이 존재하지 않습니다.");
+				} else {
+					System.out.print("수정할 가격 입력 : ");
+					int newPrice = checkNumber("수정할 가격 입력");
+					fruit.put("price", newPrice);
 				}
 				
 			} else if(menu == -1) {
