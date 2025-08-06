@@ -32,6 +32,15 @@ public class FruitMarket {
 		return input;
 	}
 	
+	public static HashMap<String, Object> searchFruit(ArrayList<HashMap<String, Object>> list, String fruitName){
+		for(int i=0; i<list.size(); i++) {
+			HashMap<String, Object> getFruit = list.get(i);
+			if(getFruit.get("fruitName").equals(fruitName)) {
+				return getFruit;
+			} 
+		}
+		return null;
+	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -48,38 +57,26 @@ public class FruitMarket {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<>();
 		System.out.println("======= 과일가게 프로그램 =======");
 		while(true) {
-			System.out.print("[ (1)추가 (2)확인 (3)판매 (-1)종료 ] : ");
+			System.out.print("[ (1)추가 (2)확인 (3)판매 (4)가격 수정 (-1)종료 ] : ");
 			int menu = s.nextInt();
 			
 			if(menu == 1) {
-				HashMap<String, Object> fruit = new HashMap<>();
 				System.out.print("과일명 : ");
 				String fruitName = s.next();
-				boolean searchFlg = false;
-				for(int i=0; i<list.size(); i++) {
-					HashMap<String, Object> getFruit = list.get(i);
-					if(getFruit.get("fruitName").equals(fruitName)) {
-						searchFlg = true;
-//						System.out.print("개수 : ");
-						int count = checkNumber("개수");
-						int sum = (int) getFruit.get("count") + count;
-						getFruit.put("count", sum);
-					} 
+				HashMap<String, Object> fruit = searchFruit(list, fruitName);
+				if(fruit == null) {
+					// 과일 map만들고 list에 추가
+					fruit = new HashMap<String, Object>();
+					fruit.put("fruitName", fruitName);
+					fruit.put("price", checkNumber("가격"));
+					fruit.put("count", checkNumber("개수"));
+					list.add(fruit);
+				} else {
+					// fruit에 있는 과일 개수만 변경(기존거에 입력한거 추가)
+					int sum = (int) fruit.get("count") + checkNumber("개수");
+					fruit.put("count", sum);
 				}
 				
-				if(!searchFlg) {
-					fruit.put("fruitName", fruitName);
-					
-//					System.out.print("가격 : ");
-//					int price = s.nextInt();
-					fruit.put("price", checkNumber("가격"));
-					
-//					System.out.print("개수 : ");
-//					int count = s.nextInt();
-					fruit.put("count", checkNumber("개수"));
-					
-					list.add(fruit);
-				}
 				
 			} else if(menu == 2) {
 				System.out.print("검색할 과일명 : ");
@@ -118,6 +115,23 @@ public class FruitMarket {
 				if(!searchFlg) { // searchFlg == false
 					System.out.println("해당 과일이 존재하지 않습니다.");
 				}
+			} else if(menu == 4) {
+				System.out.print("가격 수정할 과일명 : ");
+				String fruitName = s.next();
+				boolean searchFlg = false;
+				for(int i=0; i<list.size(); i++) {
+					HashMap<String, Object> map = list.get(i);
+					if(map.get("fruitName").equals(fruitName)) {
+						searchFlg = true;
+						System.out.print("수정할 가격 입력 : ");
+						int newPrice = checkNumber("수정할 가격 입력");
+						map.put("price", newPrice);
+					}
+				}
+				if(!searchFlg) { // searchFlg == false
+					System.out.println("해당 과일이 존재하지 않습니다.");
+				}
+				
 			} else if(menu == -1) {
 				System.out.println("종료되었습니다.");
 				break;
