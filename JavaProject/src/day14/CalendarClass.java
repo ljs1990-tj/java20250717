@@ -51,8 +51,12 @@ public class CalendarClass {
 		// TODO Auto-generated method stub
 		Calendar now = Calendar.getInstance();
 		printCalendar("현재", now);
+		
+		
 		Calendar firstDate = Calendar.getInstance();
 		firstDate.clear();
+		
+		
 		// 2016년12월25일. 12월을표현하기위해month에11로설정
 		firstDate.set(2016, 11, 25);
 		firstDate.set(Calendar.HOUR_OF_DAY, 20); // 저녁8시

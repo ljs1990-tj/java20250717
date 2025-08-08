@@ -88,8 +88,6 @@ public class FruitMarket {
 					System.out.print("가격 : " + fruit.get("price") + "원, ");
 					System.out.println("개수 : " + fruit.get("count") + "개");
 				}
-				
-				
 			} else if(menu == 3) {
 				System.out.print("판매할 과일명 : ");
 				String fruitName = s.next();
