@@ -15,7 +15,7 @@ public class UserSystem {
 			System.out.print("아이디 : ");
 			id = s.next();
 			String query = "SELECT * FROM TBL_USER WHERE USERID = '" + id + "'";
-			if(userAuth(query)) {
+			if(userAuth(query)) { // 아이디 중복체크
 				System.out.println("중복된 아이디가 있습니다. 다시 입력해주세요.");
 			} else {
 				break;
@@ -47,7 +47,9 @@ public class UserSystem {
 		String pwd = s.next();
 		
 		String query = "SELECT U.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD HH24:MI:SS') AS JOINDATE FROM TBL_USER U WHERE USERID = '" + id + "'";
-		boolean idCheck = userAuth(query);
+		// 아이디가 있으면 true 없으면 false
+		boolean idCheck = userAuth(query); 
+		// 아이디+비밀번호가 있으면 true, 없으면 false
 		boolean allCheck = userAuth(query + " AND PASSWORD = '" + pwd + "'");
 		
 		if(allCheck) {
@@ -57,12 +59,14 @@ public class UserSystem {
 		} else {
 			System.out.println("없는 아이디 입니다.");
 		}
-		
+		// 로그인 성공시 true, 실패시 false 리턴
 		return allCheck;
 	}
 	
 	public static boolean userAuth(String query) throws SQLException {
 		rs = db.stmt.executeQuery(query);
+		// 쿼리 조회 결과가 있으면 true return
+		// 없으면 false return
 		return rs.next();
 	}
 	
@@ -94,7 +98,6 @@ public class UserSystem {
 		System.out.println("=== 회원 탈퇴를 위해 로그인을 먼저 해주세요. ===");
 		if(login()) {
 			System.out.print("정말 탈퇴하시겠습니까? [ Y : 탈퇴 ], [ 그외 종료 ] : ");
-			
 			if(s.next().equals("Y")) {
 				String query = "DELETE FROM TBL_USER WHERE USERID = '" + rs.getString("USERID") + "'";
 				int num = db.stmt.executeUpdate(query);
