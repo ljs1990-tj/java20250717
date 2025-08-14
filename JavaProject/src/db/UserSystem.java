@@ -1,8 +1,116 @@
 package db;
 
-public class UserSystem {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
 
-	public static void main(String[] args) {
+public class UserSystem {
+	static Scanner s = new Scanner(System.in);
+	static ResultSet rs = null;
+	static DBClass db = new DBClass();
+	
+	public static void join() throws SQLException {
+		String id = "";
+		while(true) {
+			System.out.print("아이디 : ");
+			id = s.next();
+			String query = "SELECT * FROM TBL_USER WHERE USERID = '" + id + "'";
+			if(userAuth(query)) {
+				System.out.println("중복된 아이디가 있습니다. 다시 입력해주세요.");
+			} else {
+				break;
+			}
+		}
+		
+		System.out.print("비밀번호 : ");
+		String pwd = s.next();
+		System.out.print("이름 : ");
+		String name = s.next();
+		
+		String query = "INSERT INTO TBL_USER(USERID, PASSWORD, NAME, CDATETIME) VALUES("
+						+ "'" + id + "',"
+						+ "'" + pwd + "',"
+						+ "'" + name + "',"
+						+ "SYSDATE)";
+		int num = db.stmt.executeUpdate(query);
+		if(num > 0) {
+			System.out.println("가입되었습니다!");
+		} else {
+			System.out.println("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+	}
+	
+	public static boolean login() throws SQLException {
+		System.out.print("아이디 : ");
+		String id = s.next();
+		System.out.print("비밀번호 : ");
+		String pwd = s.next();
+		
+		String query = "SELECT U.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD HH24:MI:SS') AS JOINDATE FROM TBL_USER U WHERE USERID = '" + id + "'";
+		boolean idCheck = userAuth(query);
+		boolean allCheck = userAuth(query + " AND PASSWORD = '" + pwd + "'");
+		
+		if(allCheck) {
+			System.out.println("로그인 성공");
+		} else if(idCheck) {
+			System.out.println("비밀번호를 확인해주세요.");
+		} else {
+			System.out.println("없는 아이디 입니다.");
+		}
+		
+		return allCheck;
+	}
+	
+	public static boolean userAuth(String query) throws SQLException {
+		rs = db.stmt.executeQuery(query);
+		return rs.next();
+	}
+	
+	public static void pwdUpdate() throws SQLException {
+		System.out.println("=== 비밀번호 변경을 위해 로그인을 먼저 해주세요. ===");
+		if(login()) {
+			System.out.print("변경할 비밀번호를 입력해주세요 : ");
+			String pwd = s.next();
+			String query = "UPDATE TBL_USER SET PASSWORD = '" + pwd + "' WHERE USERID = '" + rs.getString("USERID") + "'";
+			int num = db.stmt.executeUpdate(query);
+			if(num > 0) {
+				System.out.println("수정되었습니다!");
+			} else {
+				System.out.println("에러가 발생했습니다!");
+			}
+		}
+	}
+	
+	public static void userInfo() throws SQLException {
+		System.out.println("=== 정보 확인을 위해 로그인을 먼저 해주세요. ===");
+		if(login()) {
+			System.out.print("아이디 : " + rs.getString("USERID") + ", ");
+			System.out.print("이름 : " + rs.getString("NAME") + ", ");
+			System.out.println("가입날짜 : " + rs.getString("JOINDATE"));
+		}
+	}
+	
+	public static void userWithdrawal() throws SQLException {
+		System.out.println("=== 회원 탈퇴를 위해 로그인을 먼저 해주세요. ===");
+		if(login()) {
+			System.out.print("정말 탈퇴하시겠습니까? [ Y : 탈퇴 ], [ 그외 종료 ] : ");
+			
+			if(s.next().equals("Y")) {
+				String query = "DELETE FROM TBL_USER WHERE USERID = '" + rs.getString("USERID") + "'";
+				int num = db.stmt.executeUpdate(query);
+				if(num > 0) {
+					System.out.println("탈퇴되었습니다.");
+				} else {
+					System.out.println("에러가 발생했습니다!");
+				}
+			} else {
+				System.out.println("취소되었습니다."); 
+			}
+			
+		}
+	}
+	
+	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 		// 사용자 관리 시스템
 		// 메뉴 1. 회원가입
@@ -26,6 +134,34 @@ public class UserSystem {
 		//		  -> 그 외 값 누르면 다시 메뉴로 이동
 		// 그외. 종료
 		
+		while(true) {
+			System.out.print("[(1)회원가입 (2)로그인 (3)비밀번호수정 (4)정보확인 (5) 탈퇴 (6) 종료 ] : ");
+			int menu = s.nextInt();
+			switch (menu) {
+			case 1:
+				join();
+				break;
+			case 2: 
+				login();
+				break;
+			case 3: 
+				pwdUpdate();
+				break;
+			case 4:
+				userInfo();
+				break;
+			case 5:
+				userWithdrawal();
+				break;
+			default:
+				System.out.println("종료되었습니다.");
+				break;
+			}
+			
+		    if (menu < 1 || menu > 5) {
+		        break; 
+		    }
+		}
 		
 	}
 }
